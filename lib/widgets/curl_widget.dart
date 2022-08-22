@@ -28,7 +28,7 @@ class CurlWidget extends StatefulWidget {
 
 class _CurlWidgetState extends State<CurlWidget> {
   bool get debugging => widget.debugging;
-  bool get isVertical => false;
+  bool get isVertical => widget.vertical;
 
   /* variables that controls drag and updates */
 
