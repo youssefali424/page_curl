@@ -15,10 +15,10 @@ class CurlWidget extends StatefulWidget {
   final bool debugging;
 
   CurlWidget({
-    @required this.frontWidget,
-    @required this.backWidget,
-    @required this.size,
-    @required this.vertical,
+    required this.frontWidget,
+    required this.backWidget,
+    required this.size,
+    required this.vertical,
     this.debugging = false,
   });
 
@@ -36,37 +36,37 @@ class _CurlWidgetState extends State<CurlWidget> {
   int mCurlSpeed = 60;
 
   /* The initial offset for x and y axis movements */
-  int mInitialEdgeOffset;
+  late int mInitialEdgeOffset;
 
   /* Maximum radius a page can be flipped, by default it's the width of the view */
-  double mFlipRadius;
+  late double mFlipRadius;
 
   /* pointer used to move */
-  Vector2D mMovement;
+  late Vector2D mMovement;
 
   /* finger position */
-  Vector2D mFinger;
+  late Vector2D mFinger;
 
   /* movement pointer from the last frame */
-  Vector2D mOldMovement;
+  late Vector2D mOldMovement;
 
   /* paint curl edge */
-  Paint curlEdgePaint;
+  late Paint curlEdgePaint;
 
   /* vector points used to define current clipping paths */
-  Vector2D mA, mB, mC, mD, mE, mF, mOldF, mOrigin;
+  late Vector2D mA, mB, mC, mD, mE, mF, mOldF, mOrigin;
 
   /* vectors that are corners of the entire polygon */
-  Vector2D mM, mN, mO, mP;
+  late Vector2D mM, mN, mO, mP;
 
   /* ff false no draw call has been done */
-  bool bViewDrawn;
+  late bool bViewDrawn;
 
   /* if TRUE we are currently auto-flipping */
-  bool bFlipping;
+  late bool bFlipping;
 
   /* tRUE if the user moves the pages */
-  bool bUserMoves;
+  late bool bUserMoves;
 
   /* used to control touch input blocking */
   bool bBlockTouchInput = false;
@@ -74,9 +74,9 @@ class _CurlWidgetState extends State<CurlWidget> {
   /* enable input after the next draw event */
   bool bEnableInputAfterDraw = false;
 
-  double abs(double value) {
+  double abs(num value) {
     if (value < 0) return value * -1;
-    return value;
+    return value.toDouble();
   }
 
   Vector2D capMovement(Vector2D point, bool bMaintainMoveDir) {
@@ -205,13 +205,13 @@ class _CurlWidgetState extends State<CurlWidget> {
   void handleTouchInput(TouchEvent touchEvent) {
     if (bBlockTouchInput) return;
 
-    if (touchEvent.getEvent() != TouchEventType.END) {
+    if (touchEvent.event != TouchEventType.END) {
       // get finger position if NOT TouchEventType.END
-      mFinger.x = touchEvent.getX();
-      mFinger.y = touchEvent.getY();
+      mFinger.x = touchEvent.dx;
+      mFinger.y = touchEvent.dy;
     }
 
-    switch (touchEvent.getEvent()) {
+    switch (touchEvent.event) {
       case TouchEventType.END:
         bUserMoves = false;
         bFlipping = true;
@@ -278,7 +278,7 @@ class _CurlWidgetState extends State<CurlWidget> {
     init();
   }
 
-  Widget boundingBox({Widget child}) => child;
+  Widget? boundingBox({Widget? child}) => child;
 
   double getAngle() {
     double displaceInX = mA.x - mF.x;
@@ -308,7 +308,7 @@ class _CurlWidgetState extends State<CurlWidget> {
     }
 
     if (details is DragEndDetails) {
-      handleTouchInput(TouchEvent(TouchEventType.END, null));
+      handleTouchInput(TouchEvent(TouchEventType.END, Offset.zero));
     }
 
     if (details is DragUpdateDetails) {

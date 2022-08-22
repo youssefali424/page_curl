@@ -8,8 +8,8 @@ class TouchEvent {
 
   TouchEvent(this._eventType, this._offset);
 
-  TouchEventType getEvent() => _eventType;
+  TouchEventType get event => _eventType;
 
-  double getX() => _offset.dx;
-  double getY() => _offset.dy;
+  double get dx => _offset.dx;
+  double get dy => _offset.dy;
 }
